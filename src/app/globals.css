@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* Tone hồng pastel. Chữ và nút dùng hồng đậm để đủ tương phản trên nền sáng. */
+:root {
+  --background: #fff8fa;
+  --foreground: #3d2530;
+  --muted: #7e5f6b;
+  --surface: #fdebf1;
+  --line: #f6d5e0;
+  --accent: #c2457a;
+  --accent-soft: #f9cfdd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-be-vietnam);
+  --font-display: var(--font-baloo);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Bù chiều cao header cố định khi nhảy tới anchor. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Ẩn thanh cuộn nhưng vẫn cuộn được (carousel đánh giá). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Animation ---------- */
+
+/* Hiện dần khi cuộn tới: chỉ ẩn sau khi JS đã sẵn sàng (ScrollReveal). */
+html[data-reveal-ready] [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    translate 0.3s ease,
+    border-color 0.3s ease;
+}
+html[data-reveal-ready] [data-reveal="zoom"] {
+  transform: scale(0.94);
+}
+html[data-reveal-ready] [data-reveal="left"] {
+  transform: translateX(-36px);
+}
+html[data-reveal-ready] [data-reveal="right"] {
+  transform: translateX(36px);
+}
+html[data-reveal-ready] [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero xuất hiện ngay khi tải trang. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* Hình tròn trang trí trôi lơ lửng (Bubbles). */
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+.animate-float {
+  animation: float 7s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
+  html[data-reveal-ready] [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-fade-up {
+    animation: none;
+  }
+}
