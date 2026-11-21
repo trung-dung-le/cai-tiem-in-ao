@@ -11,6 +11,7 @@ export function Photo({
   sizes = "100vw",
   preload = false,
   tone = "bg-surface",
+  focus,
 }: {
   src: string;
   alt: string;
@@ -18,6 +19,8 @@ export function Photo({
   sizes?: string;
   preload?: boolean;
   tone?: string;
+  /** object-position, ví dụ "54% 50%" — chỉnh vùng ảnh được giữ lại khi bị cắt. */
+  focus?: string;
 }) {
   return (
     <div className={`relative overflow-hidden ${tone} ${className}`}>
@@ -29,6 +32,7 @@ export function Photo({
           sizes={sizes}
           preload={preload}
           className="object-cover"
+          style={focus ? { objectPosition: focus } : undefined}
         />
       ) : (
         <div

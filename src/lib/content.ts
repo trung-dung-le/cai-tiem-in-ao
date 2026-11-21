@@ -74,21 +74,22 @@ export const services = [
     body: "In hình, chữ, ảnh kỷ niệm lên áo thun cho riêng bạn hoặc làm quà tặng.",
     tag: "Từ 1 áo",
     href: "#san-pham",
-    image: "",
+    image: "/images/ao-thun-ca-nhan.jpg",
   },
   {
     name: "Áo nhóm · Áo lớp",
     body: "Đồng phục cho lớp, nhóm bạn, câu lạc bộ, chuyến đi chơi hay sự kiện.",
     tag: "Theo nhóm",
     href: "#san-pham",
-    image: "",
+    image: "/images/ao-lop.jpg",
   },
   {
     name: "Áo đôi · Áo gia đình",
     body: "Những thiết kế đi theo cặp, theo bộ cho người thương và cả nhà.",
     tag: "Theo bộ",
     href: "#san-pham",
-    image: "",
+    image: "/images/ao-doi.jpg",
+    focus: "54% 50%",
   },
 ] as const;
 

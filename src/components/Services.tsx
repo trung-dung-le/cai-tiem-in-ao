@@ -24,6 +24,7 @@ export function Services() {
                   src={item.image}
                   alt={item.name}
                   tone={tones[i % tones.length]}
+                  focus={"focus" in item ? item.focus : undefined}
                   className="aspect-[3/4] rounded-3xl transition-[border-radius] duration-500 group-hover:rounded-xl"
                   sizes="(min-width: 768px) 33vw, 100vw"
                 />
