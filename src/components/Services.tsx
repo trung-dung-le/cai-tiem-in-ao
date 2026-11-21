@@ -1,10 +1,8 @@
-import { services } from "@/lib/content";
+import { serviceGroups } from "@/lib/content";
 import { revealDelay } from "@/lib/reveal";
-import { Photo } from "./Photo";
 import { SectionHeading } from "./SectionHeading";
 import { Bubbles } from "./Bubbles";
-
-const tones = ["bg-accent-soft", "bg-surface", "bg-[#f3e1f0]"];
+import { ServicesCard } from "./ServicesCard";
 
 export function Services() {
   return (
@@ -14,27 +12,13 @@ export function Services() {
         <SectionHeading
           eyebrow="Dịch vụ"
           title="Tiệm in gì cho bạn?"
-          body="Dù là một chiếc áo làm quà hay cả chục chiếc cho lớp, tiệm đều làm tỉ mỉ như nhau."
+          body="Dù là một chiếc áo làm quà hay cả chục chiếc cho lớp, Tiệm đều làm tỉ mỉ như nhau."
         />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {services.map((item, i) => (
-            <a key={item.name} href={item.href} data-reveal style={revealDelay(i, 120)} className="group block hover:-translate-y-1.5">
-              <div className="relative">
-                <Photo
-                  src={item.image}
-                  alt={item.name}
-                  tone={tones[i % tones.length]}
-                  focus={"focus" in item ? item.focus : undefined}
-                  className="aspect-[3/4] rounded-3xl transition-[border-radius] duration-500 group-hover:rounded-xl"
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                />
-                <span className="absolute left-4 top-4 rounded-full bg-background px-3 py-1 text-xs font-medium text-accent">
-                  {item.tag}
-                </span>
-              </div>
-              <h3 className="mt-4 font-display text-2xl">{item.name}</h3>
-              <p className="mt-1 text-sm text-muted">{item.body}</p>
-            </a>
+          {serviceGroups.map((group, i) => (
+            <div key={group.name} data-reveal style={revealDelay(i, 120)}>
+              <ServicesCard group={group} id={`dich-vu-${i}`} />
+            </div>
           ))}
         </div>
       </div>

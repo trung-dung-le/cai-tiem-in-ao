@@ -4,6 +4,7 @@ import Image from "next/image";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { formatPrice, products, site } from "@/lib/content";
 import { revealDelay } from "@/lib/reveal";
+import { OPEN_PRODUCT_EVENT, type OpenProductDetail } from "@/lib/openProduct";
 import { Photo } from "./Photo";
 import { SmartLink } from "./SmartLink";
 
@@ -38,6 +39,32 @@ function groupByFlag(items: readonly Product[]) {
 /** Lưới sản phẩm; bấm vào một sản phẩm để mở popup xem chi tiết. */
 export function ProductGrid() {
   const [active, setActive] = useState<Product | null>(null);
+  const [startIndex, setStartIndex] = useState(0);
+
+  // Nơi khác (popup Dịch vụ) yêu cầu mở một sản phẩm: cuộn tới thẻ rồi mở popup đúng lựa chọn.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const onOpen = (e: Event) => {
+      const { product: name, variant } = (e as CustomEvent<OpenProductDetail>).detail;
+      const product = products.find((p) => p.name === name);
+      if (!product) return;
+      const leading = [product.image, ...(product.gallery ?? [])].filter(Boolean).length;
+      const v = variant ? (product.variants ?? []).findIndex((x) => x.name === variant) : -1;
+      document
+        .querySelector(`[data-product="${CSS.escape(product.name)}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        setStartIndex(v >= 0 ? leading + v : 0);
+        setActive(product);
+      }, 600);
+    };
+    window.addEventListener(OPEN_PRODUCT_EVENT, onOpen);
+    return () => {
+      window.removeEventListener(OPEN_PRODUCT_EVENT, onOpen);
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -45,10 +72,13 @@ export function ProductGrid() {
         {groupByFlag(products).map((group) => (
           <ul key={group[0].name} className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
             {group.map((item, i) => (
-              <li key={item.name} data-reveal style={revealDelay(i)} className="hover:-translate-y-1.5">
+              <li key={item.name} data-product={item.name} data-reveal style={revealDelay(i)} className="scroll-mt-24 hover:-translate-y-1.5">
                 <button
                   type="button"
-                  onClick={() => setActive(item)}
+                  onClick={() => {
+                    setStartIndex(0);
+                    setActive(item);
+                  }}
                   aria-haspopup="dialog"
                   className="group block w-full cursor-pointer text-left"
                 >
@@ -86,14 +116,14 @@ export function ProductGrid() {
         ))}
       </div>
 
-      <ProductDialog key={active?.name} product={active} onClose={() => setActive(null)} />
+      <ProductDialog key={`${active?.name}-${startIndex}`} product={active} startIndex={startIndex} onClose={() => setActive(null)} />
     </>
   );
 }
 
-function ProductDialog({ product, onClose }: { product: Product | null; onClose: () => void }) {
+function ProductDialog({ product, startIndex = 0, onClose }: { product: Product | null; startIndex?: number; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(startIndex);
 
   const images: Slide[] = product
     ? [
@@ -284,7 +314,7 @@ function ProductDialog({ product, onClose }: { product: Product | null; onClose:
                 href={site.facebook}
                 className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:bg-foreground"
               >
-                Nhắn tiệm đặt in
+                Nhắn Tiệm đặt in
               </SmartLink>
               <SmartLink
                 href={site.zalo}
@@ -326,7 +356,7 @@ function NoteCard({ note }: { note: string }) {
         href={site.facebook}
         className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-foreground"
       >
-        Nhắn tiệm
+        Nhắn Tiệm
       </SmartLink>
     </div>
   );
@@ -334,7 +364,7 @@ function NoteCard({ note }: { note: string }) {
 type Variant = NonNullable<Product["variants"]>[number];
 
 function Swatch({ color }: { color: string }) {
-  return <span aria-hidden="true" className="h-3.5 w-3.5 shrink-0 rounded-full ring-1 ring-foreground/20" style={{ backgroundColor: color }} />;
+  return <span aria-hidden="true" className="h-3.5 w-3.5 shrink-0 rounded-full ring-1 ring-foreground/20" style={{ background: color }} />;
 }
 
 /** Tô màu riêng cho tên lựa chọn (có `color`) xuất hiện trong đoạn mô tả, không phân biệt hoa thường. */

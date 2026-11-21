@@ -10,7 +10,7 @@ export function Products() {
       <Bubbles preset="products" />
       <div className="mx-auto max-w-6xl px-5">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading eyebrow="Sản phẩm" title="Chọn áo, tiệm in hình" />
+          <SectionHeading eyebrow="Sản phẩm" title="Chọn áo, Tiệm in hình" />
           <SmartLink href={site.facebook} className="text-sm font-medium underline underline-offset-4 hover:text-accent">
             Xem thêm mẫu trên Facebook
           </SmartLink>

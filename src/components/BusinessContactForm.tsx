@@ -107,7 +107,7 @@ function FormBody({ onReset }: { onReset: () => void }) {
 }
 
 /**
- * Biến email của tiệm trong thông báo lỗi thành link `mailto:`, điền sẵn tiêu đề
+ * Biến email của Tiệm trong thông báo lỗi thành link `mailto:`, điền sẵn tiêu đề
  * và nội dung khách đã nhập để họ gửi trực tiếp bằng ứng dụng email.
  */
 function MessageWithEmailLink({

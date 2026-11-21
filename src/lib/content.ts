@@ -7,7 +7,7 @@
  * placeholder thay cho ảnh.
  *
  * CẦN ĐIỀN: các chỗ ghi "Đang cập nhật" và những mục đánh dấu `// TODO` bên dưới
- * là thông tin chưa xác minh được — hãy thay bằng thông tin thật của tiệm.
+ * là thông tin chưa xác minh được — hãy thay bằng thông tin thật của Tiệm.
  */
 
 export const site = {
@@ -22,7 +22,7 @@ export const site = {
   phone: "0869 986 406",
   email: "caitieminao@gmail.com",
   address: "Hà Đông, Hà Nội",
-  hours: "8:00 - 24:00",
+  hours: "8:00 - 22:00",
 } as const;
 
 export const nav = [
@@ -34,17 +34,17 @@ export const nav = [
 ] as const;
 
 export const hero = {
-  eyebrow: "In áo theo yêu cầu",
-  title: "Mặc lên người",
-  titleAccent: "ý tưởng của riêng bạn",
-  body: "Gửi cho tiệm một hình vẽ, một câu nói hay chỉ là ý tưởng mơ hồ — tụi mình sẽ lên mẫu, gửi bạn duyệt rồi in thành chiếc áo chỉ bạn mới có.",
-  primaryCta: { label: "Nhắn tiệm qua Facebook", href: site.facebook },
+  eyebrow: "In ấn theo yêu cầu - xuất hóa đơn đầy đủ",
+  title: "Khoác lên người",
+  titleAccent: "những ý tưởng của riêng bạn",
+  body: "Bạn gửi cho Tiệm ý tưởng / thiết kế - Tiệm sẽ lên mẫu gửi bạn kiểm tra, sau đó tiến hành lên đơn và sản xuất chiếc áo của riêng bạn",
+  primaryCta: { label: "Nhắn Tiệm qua Facebook", href: site.facebook },
   secondaryCta: { label: "Xem quy trình", href: "#quy-trinh" },
-  // TODO: thay bằng con số thật của tiệm, hoặc để mảng rỗng [] để ẩn đi.
+  // TODO: thay bằng con số thật của Tiệm, hoặc để mảng rỗng [] để ẩn đi.
   stats: [
-    { value: "Từ 1 áo", label: "nhận in số lượng ít" },
+    { value: "Từ 1 sản phẩm", label: "nhận in số lượng ít" },
     { value: "Mockup", label: "duyệt mẫu trước khi in" },
-    { value: "Ship", label: "giao hàng tận nơi" },
+    { value: "Vận chuyển", label: "giao hàng toàn quốc" },
   ],
   image: "",
 } as const;
@@ -59,43 +59,97 @@ export const benefits = [
     body: "Chưa có file thiết kế? Tiệm giúp bạn chỉnh sửa và lên mẫu từ ý tưởng.",
   },
   {
-    title: "Duyệt mockup trước",
-    body: "Bạn xem hình áo mô phỏng và chốt mẫu xong tiệm mới bắt đầu in.",
+    title: "Tư vấn size & chất vải",
+    body: "Nhắn Tiệm để được gợi ý form áo, màu vải và kiểu in phù hợp.",
   },
   {
-    title: "Tư vấn size & chất vải",
-    body: "Nhắn tiệm để được gợi ý form áo, màu vải và kiểu in phù hợp.",
+    title: "Lên đơn sản xuất và vận chuyển",
+    body: "Chốt mẫu xong Tiệm lên đơn sản xuất và giao hàng toàn quốc đến tận tay bạn.",
   },
 ] as const;
 
-export const services = [
+export type ServiceItem = {
+  name: string;
+  body: string;
+  tag?: string;
+  href: string;
+  image: string;
+  /** Tên sản phẩm trong `products` — bấm vào sẽ cuộn xuống và mở chi tiết sản phẩm đó. */
+  product?: string;
+  /** Tên lựa chọn (`variants[].name`) của sản phẩm đó để mở đúng ảnh. */
+  variant?: string;
+  /** object-position khi ảnh bị cắt, ví dụ "54% 50%". */
+  focus?: string;
+};
+
+export type ServiceGroup = {
+  name: string;
+  body: string;
+  tag: string;
+  items: readonly ServiceItem[];
+};
+
+/**
+ * Các thẻ ngoài mục Dịch vụ (3 thẻ trên một hàng). Bấm vào mỗi thẻ mở popup
+ * liệt kê `items`. Ảnh bìa ghép từ tối đa 4 ảnh đầu của `items`.
+ */
+export const serviceGroups: readonly ServiceGroup[] = [
   {
-    name: "Áo thun cá nhân",
-    body: "In hình, chữ, ảnh kỷ niệm lên áo thun cho riêng bạn hoặc làm quà tặng.",
-    tag: "Từ 1 áo",
-    href: "#san-pham",
-    image: "/images/ao-thun-ca-nhan.jpg",
+    name: "Áo cá nhân · Áo nhóm · Áo đôi",
+    body: "Tiệm có: áo phông oversize/ boxy/ babytee/ long sleeves/ polo/ sweater/ hoodie. Áo chất liệu dày dặn.",
+    tag: "Từ 1 sản phẩm",
+    items: [
+      {
+        name: "Áo thun cá nhân",
+        body: "In hình, chữ, ảnh kỷ niệm lên áo thun cho riêng bạn hoặc làm quà tặng.",
+        tag: "Từ 1 sản phẩm",
+        href: "#san-pham",
+        image: "/images/ao-thun-ca-nhan.jpg",
+      },
+      {
+        name: "Áo nhóm · Áo lớp",
+        body: "Đồng phục cho lớp, nhóm bạn, câu lạc bộ, chuyến đi chơi hay sự kiện.",
+        tag: "Theo nhóm",
+        href: "#san-pham",
+        image: "/images/ao-lop.jpg",
+      },
+      {
+        name: "Áo đôi · Áo gia đình",
+        body: "Những thiết kế đi theo cặp, theo bộ cho người thương và cả nhà.",
+        tag: "Theo bộ",
+        href: "#san-pham",
+        image: "/images/ao-doi.jpg",
+        focus: "54% 50%",
+      },
+    ],
   },
   {
-    name: "Áo nhóm · Áo lớp",
-    body: "Đồng phục cho lớp, nhóm bạn, câu lạc bộ, chuyến đi chơi hay sự kiện.",
-    tag: "Theo nhóm",
-    href: "#san-pham",
-    image: "/images/ao-lop.jpg",
+    name: "Khăn bandana · Khăn twilly",
+    body: "Khăn lụa cao cấp, màu in sắc nét, chuẩn màu đảm bảo khách sẽ hài lòng.",
+    tag: "Phụ kiện",
+    items: [
+      { name: "Bandana lụa satin", body: "Bóng mượt, màu in lên tươi.", href: "#san-pham", image: "/images/khan-satin.jpg", product: "Khăn bandana", variant: "Lụa satin" },
+      { name: "Bandana lụa latin", body: "Mềm, mát, rủ nhẹ.", href: "#san-pham", image: "/images/khan-latin.jpg", product: "Khăn bandana", variant: "Lụa latin" },
+      { name: "Bandana lụa vân xước", body: "Có vân nổi nhẹ trên mặt vải.", href: "#san-pham", image: "/images/khan-van-xuoc-2.jpg", product: "Khăn bandana", variant: "Lụa vân xước" },
+      { name: "Khăn twilly", body: "Khăn bản nhỏ thắt quai túi, buộc tóc hay đeo cổ tay.", href: "#san-pham", image: "/images/khan-twilly.jpg", product: "Quà tặng may vải", variant: "Khăn twilly" },
+    ],
   },
   {
-    name: "Áo đôi · Áo gia đình",
-    body: "Những thiết kế đi theo cặp, theo bộ cho người thương và cả nhà.",
-    tag: "Theo bộ",
-    href: "#san-pham",
-    image: "/images/ao-doi.jpg",
-    focus: "54% 50%",
+    name: "Túi tote",
+    body: "Túi vải canvas R34 × D38 cm, in hình theo thiết kế riêng của bạn — tiện dụng đi học, đi làm, đi chơi.",
+    tag: "4 lựa chọn",
+    items: [
+      { name: "Tote trắng", body: "Nền trắng, hình in nổi bật.", href: "#san-pham", image: "/images/tui-tote-trang.jpg", focus: "50% 62%", product: "Túi tote", variant: "Trắng" },
+      { name: "Tote mộc", body: "Màu vải mộc tự nhiên, nhẹ nhàng.", href: "#san-pham", image: "/images/tui-tote-moc.jpg", focus: "45% 45%", product: "Túi tote", variant: "Mộc" },
+      { name: "Tote đen", body: "Nền đen, hợp hình in màu sáng.", href: "#san-pham", image: "/images/tote-den.jpg", focus: "50% 66%", product: "Túi tote", variant: "Đen" },
+      { name: "Tote custom", body: "Chọn màu vải, kích thước, kiểu quai theo ý bạn.", href: "#san-pham", image: "/images/tote-nau.jpg", focus: "40% 58%", product: "Túi tote", variant: "Custom" },
+    ],
   },
-] as const;
+];
 
 /**
  * `price` là giá tham khảo (đồng). Để `null` thì hiển thị "Liên hệ báo giá".
- * TODO: điền giá thật của tiệm.
+ * TODO: điền giá thật của Tiệm.
  */
 /**
  * - `image`: ảnh bìa hiện trên lưới sản phẩm.
@@ -136,53 +190,53 @@ export const products: readonly {
   sizeNote?: string;
 }[] = [
   { name: "Áo phông oversize", category: "Áo", price: "Xem chi tiết trong ảnh", priceNote: "Giá áo phụ thuộc vào số lượng đặt in.", badge: "Phổ biến", flag: "allday", image: "/images/ao-phong-oversize-den.jpg", gallery: [], description: "Áo phông form oversize rộng rãi, in hình, chữ hoặc ảnh theo thiết kế riêng của bạn. Nhận in từ 1 chiếc. Có 2 chất liệu: cotton 100% co giãn 2 chiều và phông su.",
-    // Ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của tiệm.
+    // Ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của Tiệm.
     variantLabel: "Chất liệu",
     variants: [
       { name: "Cotton 100% co giãn 2 chiều", image: "/images/ao-phong-cotton.jpg", color: "#c2457a", price: "Giá in lẻ: 219,000 VND / áo" }, // hồng đậm
       { name: "Phông su", image: "/images/ao-phong-phong-su.jpg", color: "#8e4a9e", price: "Giá in lẻ: 155,000 VND / áo" }, // tím mauve
     ],
   },
-  // Ảnh babytee, boxy, polo là ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của tiệm.
+  // Ảnh babytee, boxy, polo là ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của Tiệm.
   { name: "Áo babytee", category: "Áo", price: null, badge: null, flag: "allday", image: "/images/ao-babytee.jpg", gallery: [], description: "Áo babytee form ôm, ngắn xinh xắn — hợp in hình nhỏ, chữ dễ thương." },
   { name: "Áo boxy", category: "Áo", price: null, badge: null, flag: "allday", image: "/images/ao-boxy.jpg", gallery: [], description: "Áo boxy form rộng, vai xuôi, mặc thoải mái — hợp in hình lớn mặt trước hoặc sau lưng." },
   { name: "Áo polo", category: "Áo", price: null, badge: null, flag: "allday", image: "/images/ao-polo-den.jpg", gallery: [], description: "Áo polo có cổ, lịch sự — phù hợp làm đồng phục công ty, nhóm, sự kiện." },
-  // Ảnh 3 áo mùa đông là ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của tiệm.
+  // Ảnh 3 áo mùa đông là ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh áo thật của Tiệm.
   { name: "Áo long sleeves", category: "Áo", price: null, badge: null, flag: "winter", image: "/images/ao-long-sleeves.jpg", gallery: [], description: "Áo thun dài tay, mặc riêng hay khoác trong đều hợp — in hình, chữ theo thiết kế riêng của bạn." },
   { name: "Áo sweater", category: "Áo", price: null, badge: null, flag: "winter", image: "/images/ao-sweater.jpg", gallery: [], description: "Áo sweater cổ tròn ấm áp cho ngày se lạnh — in hình, chữ theo thiết kế riêng của bạn." },
   { name: "Áo hoodie", category: "Áo", price: null, badge: null, flag: "winter", image: "/images/ao-hoodie.jpg", gallery: [], description: "Áo hoodie có mũ, form rộng thoải mái — hợp làm áo nhóm, áo lớp mùa đông với hình in mặt trước hoặc sau lưng." },
   { name: "Khăn bandana", category: "Phụ kiện", price: null, badge: null, flag: "accessories", image: "", gallery: [], description: "Khăn bandana in họa tiết theo yêu cầu, dùng buộc tóc, đeo cổ hoặc làm quà tặng. Có 3 chất liệu: satin bóng mượt, lụa latin mềm mát và lụa vân xước có vân nổi.",
-    // Ảnh vải minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh khăn thật của tiệm.
+    // Ảnh vải minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh khăn thật của Tiệm.
     variantLabel: "Chất liệu",
     variants: [
-      { name: "Lụa satin", image: "/images/bandana-satin.jpg", color: "#c2457a" }, // hồng đậm
-      { name: "Lụa latin", image: "/images/bandana-latin.jpg", color: "#8e4a9e" }, // tím mauve
-      { name: "Lụa vân xước", image: "/images/bandana-van-xuoc.jpg", color: "#b8503a" }, // cam đất
+      { name: "Lụa satin", image: "/images/khan-satin.jpg", color: "#c2457a" }, // hồng đậm
+      { name: "Lụa latin", image: "/images/khan-latin.jpg", color: "#8e4a9e" }, // tím mauve
+      { name: "Lụa vân xước", image: "/images/khan-van-xuoc-2.jpg", color: "#b8503a" }, // cam đất
     ],
     sizes: ["50 × 50 cm", "60 × 60 cm", "70 × 70 cm"],
     sizeNote: "Cần kích thước khác? Tiệm nhận làm theo yêu cầu với số lượng lớn.",
   },
-  { name: "Túi tote", category: "Phụ kiện", price: null, badge: null, flag: "accessories", image: "", gallery: [], description: "Túi tote vải in hình theo thiết kế riêng, tiện dụng đi học, đi làm, đi chơi. Có 4 màu: trắng, mộc, đen và nâu.",
-    // Ảnh túi minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh túi thật của tiệm.
+  { name: "Túi tote", category: "Phụ kiện", price: null, badge: null, flag: "accessories", image: "", gallery: [], description: "Túi tote vải in hình theo thiết kế riêng, tiện dụng đi học, đi làm, đi chơi. Có 4 lựa chọn: trắng, mộc, đen và custom theo yêu cầu.",
+    // Ảnh túi minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh túi thật của Tiệm.
     variantLabel: "Màu sắc",
     variants: [
-      { name: "Trắng", image: "/images/tote-trang.jpg", swatch: "#ffffff", focus: "60% 72%" },
-      { name: "Mộc", image: "/images/tote-moc.jpg", swatch: "#efe6d2", focus: "42% 50%" },
+      { name: "Trắng", image: "/images/tui-tote-trang.jpg", swatch: "#ffffff", focus: "50% 62%" },
+      { name: "Mộc", image: "/images/tui-tote-moc.jpg", swatch: "#efe6d2", focus: "45% 45%" },
       { name: "Đen", image: "/images/tote-den.jpg", swatch: "#1f1a1c", focus: "50% 66%" },
-      { name: "Nâu", image: "/images/tote-nau.jpg", swatch: "#b07a45", focus: "40% 58%" },
+      { name: "Custom", image: "/images/tote-nau.jpg", swatch: "conic-gradient(#c2457a, #f2c14e, #4fa3a5, #8e4a9e, #c2457a)", focus: "40% 58%" },
     ],
     sizes: ["R34 × D38 cm (rộng × dài)"],
   },
   { name: "Quà tặng may vải", category: "Quà tặng", price: null, badge: "Số lượng lớn", flag: "gifts", image: "", gallery: [], description: "Các loại quà tặng may từ vải in logo, thông điệp riêng — scrunchies, băng đô, khăn twilly, túi tote, túi rút… Nhận đặt số lượng lớn cho sự kiện, doanh nghiệp.",
-    // Ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh sản phẩm thật của tiệm.
+    // Ảnh minh hoạ từ Pexels (miễn phí dùng thương mại) — nên thay bằng ảnh sản phẩm thật của Tiệm.
     variantLabel: "Gợi ý quà tặng",
     variants: [
       { name: "Scrunchies", image: "/images/qua-scrunchies.jpg", focus: "62% 28%" },
       { name: "Băng đô", image: "/images/qua-bang-do.jpg", focus: "55% 22%" },
-      { name: "Khăn twilly", image: "/images/qua-khan-twilly.jpg", focus: "72% 55%" },
-      { name: "Túi tote", image: "/images/tote-moc.jpg", focus: "42% 50%" },
+      { name: "Khăn twilly", image: "/images/khan-twilly.jpg" },
+      { name: "Túi tote", image: "/images/tui-tote-moc.jpg", focus: "45% 45%" },
       { name: "Túi rút", image: "/images/qua-tui-rut.jpg", focus: "45% 50%" },
-      { name: "Khác", image: "", note: "Bạn có ý tưởng món quà khác? Nhắn tiệm để được tư vấn may theo yêu cầu." },
+      { name: "Khác", image: "", note: "Bạn có ý tưởng món quà khác? Nhắn Tiệm để được tư vấn may theo yêu cầu." },
     ],
   },
 ];
@@ -193,7 +247,7 @@ export const process = {
   steps: [
     {
       title: "Gửi ý tưởng",
-      body: "Nhắn tiệm qua Facebook: hình ảnh, câu chữ, màu áo, size và số lượng bạn muốn.",
+      body: "Nhắn Tiệm qua Facebook: hình ảnh, câu chữ, màu áo, size và số lượng bạn muốn.",
     },
     {
       title: "Duyệt mockup",
@@ -214,7 +268,7 @@ export const process = {
 /**
  * Đánh giá khách hàng (hiển thị dạng carousel có nút trái/phải).
  * - `avatar`: đường dẫn ảnh trong public/images/, để trống thì hiện chữ cái đầu của tên.
- * - `source`: kênh khách nhắn cho tiệm (Facebook / Zalo).
+ * - `source`: kênh khách nhắn cho Tiệm (Facebook / Zalo).
  * - `chat`: ảnh chụp đoạn chat của khách trong public/images/feedback/, hiện ở đầu thẻ.
  *   Để trống thì thẻ chỉ có chữ.
  *
@@ -223,10 +277,10 @@ export const process = {
 export const testimonials = {
   sample: false,
   items: [
-    { name: "Thu H.", source: "Facebook", service: "Áo thun", avatar: "", chat: "/images/feedback/chat-thu-huong.jpg", quote: "Áo in đẹp lắm ạ. Màu lên chuẩn, vải dày dặn, đứng form nữa, vượt ngoài mong đợi của em luôn. Cảm ơn Cái Tiệm In Áo nhiều và chúc tiệm ngày càng đắt khách nhé ạ!" },
+    { name: "Thu H.", source: "Facebook", service: "Áo thun", avatar: "", chat: "/images/feedback/chat-thu-huong.jpg", quote: "Áo in đẹp lắm ạ. Màu lên chuẩn, vải dày dặn, đứng form nữa, vượt ngoài mong đợi của em luôn. Cảm ơn Cái Tiệm In Áo nhiều và chúc Tiệm ngày càng đắt khách nhé ạ!" },
     { name: "Hoàng Dương", source: "Facebook", service: "Khăn bandana", avatar: "", chat: "/images/feedback/chat-hoang-duong-2.jpg", quote: "Trời ơi 10 điểm!" },
-    { name: "Hoàng Dương", source: "Facebook", service: "Khăn bandana", avatar: "", chat: "/images/feedback/chat-hoang-duong-1.jpg", quote: "Khăn tiệm in được chị Jiyeon cầm nè, còn khen khăn in đẹp nữa." },
-    { name: "Thanh Hà", source: "Zalo", service: "Áo thun & tạp dề", avatar: "", chat: "/images/feedback/chat-thanh-ha-feedback.jpg", quote: "Gửi tiệm coi nè, feedback chất lượng nhó :)))))" },
+    { name: "Hoàng Dương", source: "Facebook", service: "Khăn bandana", avatar: "", chat: "/images/feedback/chat-hoang-duong-1.jpg", quote: "Khăn Tiệm in được chị Jiyeon cầm nè, còn khen khăn in đẹp nữa." },
+    { name: "Thanh Hà", source: "Zalo", service: "Áo thun & tạp dề", avatar: "", chat: "/images/feedback/chat-thanh-ha-feedback.jpg", quote: "Gửi Tiệm coi nè, feedback chất lượng nhó :)))))" },
     { name: "Ngọc Anh", source: "Facebook", service: "Khăn bandana satin", avatar: "", chat: "/images/feedback/chat-ngoc-anh-2.jpg", quote: "Sốp ơi 10 điểm! Quá đẹp, quá ưng." },
     { name: "Ngọc Anh", source: "Facebook", service: "Khăn bandana", avatar: "", chat: "/images/feedback/chat-ngoc-anh-3.jpg", quote: "Ui đẹp quá aaa, vẫn tin tưởng sốp như ngày nào!" },
     { name: "Ngọc Anh", source: "Facebook", service: "Khăn bandana satin", avatar: "", chat: "/images/feedback/chat-ngoc-anh-1.jpg", quote: "Đẹp quá!" },
@@ -241,8 +295,8 @@ export const testimonials = {
 } as const;
 
 export const cta = {
-  title: "Có ý tưởng rồi? Nhắn tiệm liền nè",
-  body: "Gửi hình ảnh hoặc mô tả áo bạn muốn, tiệm sẽ phản hồi và báo giá cho bạn.",
+  title: "Có ý tưởng rồi? Nhắn Tiệm liền nè",
+  body: "Gửi hình ảnh hoặc mô tả áo bạn muốn, Tiệm sẽ phản hồi và báo giá cho bạn.",
   button: { label: "Nhắn tin qua Facebook", href: site.facebook },
   note: "Tiệm trả lời tin nhắn trong giờ làm việc.",
   zaloButton: { label: "Nhắn tin qua Zalo", href: site.zalo },
@@ -254,7 +308,7 @@ export const cta = {
  */
 export const businessContact = {
   title: "Liên hệ hợp tác doanh nghiệp",
-  body: "Đặt đồng phục, áo sự kiện hay quà tặng số lượng lớn? Để lại thông tin, tiệm sẽ gửi báo giá qua email cho bạn.",
+  body: "Đặt đồng phục, áo sự kiện hay quà tặng số lượng lớn? Để lại thông tin, Tiệm sẽ gửi báo giá qua email cho bạn.",
   requestTypes: [
     "Đồng phục công ty",
     "Áo sự kiện / team building",
@@ -293,7 +347,7 @@ export const footerLinks = [
     ],
   },
   {
-    title: "Theo dõi tiệm",
+    title: "Theo dõi Tiệm",
     links: [
       { label: "Facebook", href: site.facebook },
       { label: "Instagram", href: site.instagram },
